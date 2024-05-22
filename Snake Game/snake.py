@@ -44,3 +44,15 @@ class Snake:
     def right(self):
         if self.head.heading() != LEFT:
             self.head.setheading(RIGHT)
+
+    def grow(self):
+        self.segments.append(self.create_segment())
+
+    def create_segment(self):
+        segment = Turtle(shape="square")
+        segment.pu()
+        segment.color("white")
+        x = self.segments[len(self.segments) - 1].xcor() - 20
+        y = self.segments[len(self.segments) - 1].ycor() - 20
+        segment.goto(x, y)
+        return segment

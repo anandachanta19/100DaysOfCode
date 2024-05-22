@@ -1,4 +1,5 @@
 from turtle import Turtle
+FONT = ("Courier", 12, "bold")
 
 
 class Scoreboard(Turtle):
@@ -13,9 +14,9 @@ class Scoreboard(Turtle):
         self.setpos(x=0, y=270)
         self.ht()
         self.color("white")
-        self.write(arg=f"score: {self.score}", move=False, align="center", font=("Arial", 12, "bold"))
+        self.write(arg=f"score: {self.score}", move=False, align="center", font=FONT)
 
     def update_score(self):
         self.score += 1
         self.undo()
-        self.write(arg=f"score: {self.score}", move=False, align="center", font=("Arial", 12, "bold"))
+        self.write(arg=f"score: {self.score}", move=False, align="center", font=FONT)
