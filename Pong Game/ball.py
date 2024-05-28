@@ -13,7 +13,7 @@ class Ball(Turtle):
 
     def create_ball(self):
         self.pu()
-        self.color("white")
+        self.color("red")
         self.shape("circle")
         self.shapesize(stretch_wid=1, stretch_len=1)
         self.setheading(random.randint(10, 45))
