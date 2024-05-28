@@ -19,10 +19,18 @@ screen.onkey(fun=paddle_1.down, key="s")
 
 is_game_on = True
 while is_game_on:
+    print(paddle_1.xcor())
+    print(paddle_2.xcor())
     time.sleep(0.1)
     screen.update()
-    if paddle_1.distance(ball) <= 30 or paddle_2.distance(ball) <= 30:
-        ball.setheading(ball.heading() + 90)
     ball.move()
+    if ball.ycor() > 280 or ball.ycor() < -280:
+        ball.bounce_y()
+
+    if ball.distance(paddle_2) < 50 and ball.xcor() > 340 or ball.distance(paddle_1) < 50 and ball.xcor() < -345:
+        ball.bounce_x()
+
+    if ball.xcor() >= 390 or ball.xcor() <= -395:
+        is_game_on = False
 
 screen.exitonclick()
