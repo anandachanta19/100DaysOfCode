@@ -18,9 +18,9 @@ class Paddle(Turtle):
     def up(self):
         if self.heading() != 90:
             self.setheading(90)
-        self.forward(40)
+        self.forward(30)
 
     def down(self):
         if self.heading() != 270:
             self.setheading(270)
-        self.forward(40)
+        self.forward(30)
