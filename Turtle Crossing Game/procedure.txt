@@ -1,0 +1,11 @@
+1. Create Screen
+
+2. Create Car and make it move
+
+3. Randomize car movement in different lanes
+
+4. Level Updates (level increment)
+
+5. create Turtle and its logic
+
+6. Detect collision with cars
