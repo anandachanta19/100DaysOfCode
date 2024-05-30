@@ -30,14 +30,24 @@ while is_gameon:
         food.position()
 
     # Detection of wall collision
-    if snake.head.xcor() > 280 or snake.head.ycor() > 280 or snake.head.xcor() < -280 or snake.head.ycor() < -280:
-        score_board.game_over()
-        is_gameon = False
+    if snake.head.xcor() >= 295 or snake.head.ycor() >= 295 or snake.head.xcor() <= -295 or snake.head.ycor() <= -295:
+        answer = screen.textinput(prompt="wanna play again? (yes/no):", title="Game Over")
+        if answer == "yes":
+            score_board.game_reset()
+            snake.snake_reset()
+        else:
+            score_board.game_over()
+            is_gameon = False
 
     # Detection of snake segment collision
     for segment in snake.segments[1::]:
-        if snake.head.distance(segment) < 10:
-            score_board.game_over()
-            is_gameon = False
+        if snake.head.distance(segment) < 11:
+            answer = screen.textinput(prompt="wanna play again? (yes/no):", title="Game Over")
+            if answer == "yes":
+                score_board.game_reset()
+                snake.snake_reset()
+            else:
+                score_board.game_over()
+                is_gameon = False
 
 screen.exitonclick()
