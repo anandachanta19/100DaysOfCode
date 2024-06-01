@@ -17,5 +17,5 @@
 import pandas
 
 data = pandas.read_csv("weather_data.csv")
-temperatures = data["temp"].tolist()
-print(f"Average Temperature: {round(sum(temperatures)/len(temperatures), 2)}")
+print(f"Average Temperature: {data["temp"].mean()}")
+print(f"Maximum Temperature: {data["temp"].max()}")
