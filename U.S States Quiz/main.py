@@ -29,10 +29,7 @@ while len(guessed_states) < 50:
     answer = answer.title()
 
     if answer == "Exit":
-        missing_states = []
-        for state in states:
-            if state not in guessed_states:
-                missing_states.append(state)
+        missing_states = [state for state in states if state not in guessed_states]
         missing_data = pandas.DataFrame(missing_states)
         missing_data.to_csv("States to learn.csv")
         break
