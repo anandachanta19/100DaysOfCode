@@ -13,7 +13,7 @@ def clear():
 
 
 def save():
-    with open("data.txt", "w") as file:
+    with open("data.txt", "a") as file:
         file.write(f"\n{website_input.get()} | {email_input.get()} | {password_input.get()}")
     clear()
     website_input.focus()
