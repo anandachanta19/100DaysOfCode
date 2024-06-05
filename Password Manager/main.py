@@ -1,4 +1,5 @@
 import tkinter
+import random
 from tkinter import messagebox
 
 FONT = "Arial"
@@ -6,6 +7,31 @@ EMAIL = "anandachanta19@gmail.com"
 
 
 # ---------------------------- PASSWORD GENERATOR ------------------------------- #
+def generate_password():
+    letters = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u',
+               'v',
+               'w', 'x', 'y', 'z', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q',
+               'R',
+               'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']
+    numbers = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
+    symbols = ['!', '#', '$', '%', '&', '(', ')', '*', '+']
+
+    nr_letters = random.randint(8, 10)
+    nr_symbols = random.randint(2, 4)
+    nr_numbers = random.randint(2, 4)
+    password_letters = [random.choice(letters) for _ in range(nr_letters - 1)]
+    password_symbols = [random.choice(symbols) for _ in range(nr_symbols - 1)]
+    password_numbers = [random.choice(numbers) for _ in range(nr_numbers - 1)]
+    password_list = password_letters + password_numbers + password_symbols
+    random.shuffle(password_list)
+
+    password_input.clipboard_clear()
+    password_input.delete(0, "end")
+    password_generated = "".join(password_list)
+    password_input.insert(0, password_generated)
+    password_input.clipboard_append(password_generated)
+
+
 
 # ---------------------------- SAVE PASSWORD ------------------------------- #
 def clear():
@@ -21,7 +47,7 @@ def save():
                                                                                f"the details entered:\nEmail/Username: "
                                                                                f"{email_input.get()}\n"
                                                                                f"Password: {password_input.get()}"
-                                                                              f"\nDo you want to proceed?")
+                                                                               f"\nDo you want to proceed?")
         if is_ok:
             with open("data.txt", "a") as file:
                 file.write(f"\n{website_input.get()} | {email_input.get()} | {password_input.get()}")
@@ -61,7 +87,7 @@ password_input = tkinter.Entry(width=33)
 password_input.grid(row=3, column=1)
 
 # Buttons
-generate = tkinter.Button(text="Generate", borderwidth=1, width=14)
+generate = tkinter.Button(text="Generate", borderwidth=1, width=14, command=generate_password)
 generate.grid(row=3, column=2)
 add = tkinter.Button(text="Add", width=43, borderwidth=1, command=save)
 add.grid(row=4, column=1, columnspan=2)
