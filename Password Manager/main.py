@@ -39,8 +39,24 @@ def clear():
     password_input.delete(0, "end")
 
 
+def search_website():
+    website_name = website_input.get().title()
+    try:
+        with open("data.json", "r") as file:
+            data = json.load(file)
+    except FileNotFoundError:
+        messagebox.showinfo(title="Note!", message=f"There is no data. Start saving passwords!")
+    else:
+        if website_name.title() in data:
+            messagebox.showinfo(title=f"{website_name}",
+                                message=f"Email/Username: {data[website_name]["email"]}"
+                                        f"\nPassword: {data[website_name]["password"]}")
+        else:
+            messagebox.showinfo(title="Note!", message=f"You haven't saved any password for {website_name}")
+
+
 def save():
-    website_info = website_input.get()
+    website_info = website_input.get().title()
     email_info = email_input.get()
     password_info = password_input.get()
     new_data = {
@@ -99,8 +115,8 @@ password = tkinter.Label(text="Password:", font=(FONT, 10, "normal"))
 password.grid(row=3, column=0)
 
 # Field Inputs
-website_input = tkinter.Entry(width=51)
-website_input.grid(row=1, column=1, columnspan=2)
+website_input = tkinter.Entry(width=33)
+website_input.grid(row=1, column=1)
 website_input.focus()
 email_input = tkinter.Entry(width=51)
 email_input.grid(row=2, column=1, columnspan=2)
@@ -113,5 +129,6 @@ generate = tkinter.Button(text="Generate", borderwidth=1, width=14, command=gene
 generate.grid(row=3, column=2)
 add = tkinter.Button(text="Add", width=43, borderwidth=1, command=save)
 add.grid(row=4, column=1, columnspan=2)
-
+search = tkinter.Button(text="Search", borderwidth=1, width=14, command=search_website)
+search.grid(row=1, column=2)
 window.mainloop()
