@@ -45,14 +45,14 @@ def search_website():
         with open("data.json", "r") as file:
             data = json.load(file)
     except FileNotFoundError:
-        messagebox.showinfo(title="Note!", message=f"There is no data. Start saving passwords!")
+        messagebox.showinfo(title="Data Not Found!", message=f"There is no data. Start saving passwords!")
     else:
         if website_name.title() in data:
             messagebox.showinfo(title=f"{website_name}",
                                 message=f"Email/Username: {data[website_name]["email"]}"
                                         f"\nPassword: {data[website_name]["password"]}")
         else:
-            messagebox.showinfo(title="Note!", message=f"You haven't saved any password for {website_name}")
+            messagebox.showinfo(title="Data Not Found!", message=f"You haven't saved any password for {website_name}")
 
 
 def save():
