@@ -1,6 +1,7 @@
 import tkinter
 import random
 from tkinter import messagebox
+import json
 
 FONT = "Arial"
 EMAIL = "anandachanta19@gmail.com"
@@ -32,7 +33,6 @@ def generate_password():
     password_input.clipboard_append(password_generated)
 
 
-
 # ---------------------------- SAVE PASSWORD ------------------------------- #
 def clear():
     website_input.delete(0, "end")
@@ -40,19 +40,41 @@ def clear():
 
 
 def save():
-    if len(website_input.get()) == 0 or len(email_input.get()) == 0 or len(password_input.get()) == 0:
+    website_info = website_input.get()
+    email_info = email_input.get()
+    password_info = password_input.get()
+    new_data = {
+        website_info: {
+            "email": email_info,
+            "password": password_info
+        }
+    }
+
+    if len(website_info) == 0 or len(email_info) == 0 or len(password_info) == 0:
         messagebox.showinfo(title="Oops!", message="Please make sure you haven't left any fields empty")
     else:
-        is_ok = messagebox.askokcancel(title=f"{website_input.get()}", message=f"These are "
-                                                                               f"the details entered:\nEmail/Username: "
-                                                                               f"{email_input.get()}\n"
-                                                                               f"Password: {password_input.get()}"
-                                                                               f"\nDo you want to proceed?")
+        is_ok = messagebox.askokcancel(title=f"{website_info}", message=f"These are "
+                                                                        f"the details entered:\nEmail/Username: "
+                                                                        f"{email_info}\n"
+                                                                        f"Password: {password_info}"
+                                                                        f"\nDo you want to proceed?")
         if is_ok:
-            with open("data.txt", "a") as file:
-                file.write(f"\n{website_input.get()} | {email_input.get()} | {password_input.get()}")
-            clear()
-            website_input.focus()
+            try:
+                with open("data.json", "r") as file:
+                    data = json.load(file)
+            except FileNotFoundError:
+                with open("data.json", "w") as file:
+                    json.dump(new_data, file, indent=4)
+            except json.decoder.JSONDecodeError:
+                with open("data.json", "w") as file:
+                    json.dump(new_data, file, indent=4)
+            else:
+                data.update(new_data)
+                with open("data.json", "w") as file:
+                    json.dump(data, file, indent=4)
+            finally:
+                clear()
+                website_input.focus()
 
 
 # ---------------------------- UI SETUP ------------------------------- #
