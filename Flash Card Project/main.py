@@ -10,16 +10,10 @@ window.config(bg=BACKGROUND_COLOR, padx=50, pady=50)
 
 canvas = tkinter.Canvas(width=800, height=526, bg=BACKGROUND_COLOR, highlightthickness=0)
 front = tkinter.PhotoImage(file="images/card_front.png")
-# back = tkinter.PhotoImage(file="images/card_back.png")
 card_front = canvas.create_image(400, 263, image=front)
-# card_back = canvas.create_image(400, 265, image=back)
+name = canvas.create_text(400, 150, text="French", font=FONT_1)
+word = canvas.create_text(400, 263, text="trouve", font=FONT_2)
 canvas.grid(row=0, column=0, columnspan=3)
-
-name = tkinter.Label(text="French", font=FONT_1, bg="white")
-name.place(x=400, y=150, anchor="center")
-word = tkinter.Label(text="trouve", font=FONT_2, bg="white")
-word.place(x=400, y=263, anchor="center")
-
 
 right = tkinter.PhotoImage(file="images/right.png")
 wrong = tkinter.PhotoImage(file="images/wrong.png")
