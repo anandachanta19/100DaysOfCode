@@ -31,3 +31,4 @@ def get_iss_location():
 
 
 sunrise, sunset = get_sunrise_sunset()
+curr_lat, curr_long = get_iss_location()
