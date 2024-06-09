@@ -1,4 +1,10 @@
+import datetime as dt
+import smtplib
+
 import requests
+
+EMAIL = "p116ff@gmail.com"
+PASS = "sfeq ntof hebl gfls"
 
 LATITUDE = 26.080130
 LONGITUDE = 91.558411
@@ -30,5 +36,30 @@ def get_iss_location():
     return data["iss_position"]["latitude"], data["iss_position"]["longitude"]
 
 
-sunrise, sunset = get_sunrise_sunset()
-curr_lat, curr_long = get_iss_location()
+# returns true if iss is close
+def is_close(lat, long):
+    if LATITUDE - 5 <= lat <= LATITUDE + 5 and LONGITUDE - 5 <= long <= LONGITUDE + 5:
+        return True
+    else:
+        return False
+
+
+sunrise_time, sunset_time = get_sunrise_sunset()
+iss_lat, iss_long = get_iss_location()
+current_time = dt.datetime.now()
+# getting hours minutes seconds separated
+now = str(current_time).split(":")
+sunrise = sunrise_time.split(":")
+sunset = sunset_time.split(":")
+
+if is_close(float(iss_lat), float(iss_long)):
+    if now[0] > sunset[0] or now[0] < sunrise[0]:
+        with smtplib.SMTP("smtp.gmail.com") as connection:
+            connection.starttls()
+            connection.login(user=EMAIL, password=PASS)
+            connection.sendmail(
+                from_addr=EMAIL,
+                to_addrs="anandachanta19@gmail.com",
+                msg="Subject:Look into the Sky!!!\n\n"
+                    "ISS is flying above in the sky at your location"
+            )
