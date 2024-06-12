@@ -60,16 +60,16 @@ def send_news(head, content, percent):
 stock_response = requests.get(url="https://www.alphavantage.co/query", params=STOCK_PARAMETERS)
 stock_response.raise_for_status()
 
-yesterday_details = int(
+yesterday_closing_price = int(
     stock_response.json()["Time Series (Daily)"][YESTERDAY]["4. close"]
 )
 
-day_before_yesterday_details = int(
+day_before_yesterday_closing_price = int(
     stock_response.json()["Time Series (Daily)"][DAY_BEFORE_YESTERDAY]["4. close"]
 )
 
-profit = yesterday_details - day_before_yesterday_details
-change_percent = profit / max(yesterday_details, day_before_yesterday_details)
+profit = yesterday_closing_price - day_before_yesterday_closing_price
+change_percent = profit / max(yesterday_closing_price, day_before_yesterday_closing_price)
 if abs(change_percent) > 5:
     headLine, Brief = get_news()
     if headLine is not None and Brief is not None:
