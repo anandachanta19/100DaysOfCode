@@ -34,12 +34,9 @@ headers = {
 # )
 
 # ADDING PIXEL
-today_date = ""
-for part in str(dt.now().date()).split("-"):
-    today_date += part
-
+today = dt.now()
 pixel_params = {
-    "date": today_date,
+    "date": today.strftime("%Y%m%d"),
     "quantity": "8",
 }
 
