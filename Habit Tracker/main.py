@@ -37,7 +37,7 @@ headers = {
 today = dt.now()
 pixel_params = {
     "date": today.strftime("%Y%m%d"),
-    "quantity": "8",
+    "quantity": input("How many hours did you code today? :"),
 }
 
 add_pixel = requests.post(
@@ -46,3 +46,22 @@ add_pixel = requests.post(
     headers=headers,
 )
 print(add_pixel.text)
+
+# UPDATE A PIXEL
+# update_params = {
+#     "quantity": input(f"Update Data: How many hours did you actually code on {today.strftime("%Y-%m-%d")}? :")
+# }
+# update_pixel = requests.put(
+#     url=f"https://pixe.la/v1/users/{os.environ["PIXELA_USERNAME"]}/graphs/{graph_params["id"]}/"
+#         f"{today.strftime("%Y%m%d")}",
+#     json=update_params,
+#     headers=headers
+# )
+
+# DELETE A PIXEL
+# delete_pixel = requests.delete(
+#     url=f"https://pixe.la/v1/users/{os.environ["PIXELA_USERNAME"]}/graphs/{graph_params["id"]}/"
+#         f"{input('On which date you want delete the data (YYYYMMDD) :')}",
+#     headers=headers,
+# )
+# print(delete_pixel.text)
