@@ -4,6 +4,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 TOKEN_ENDPOINT = "https://test.api.amadeus.com/v1/security/oauth2/token"
+CITY_SEARCH = "https://test.api.amadeus.com/v1/reference-data/locations/cities"
 
 
 class FlightSearch:
@@ -28,5 +29,15 @@ class FlightSearch:
         print(f"Your token expires in {response.json()['expires_in']} seconds")
         return response.json()['access_token']
 
-    def get_iata_code(self):
+    def get_iata_code(self, name: str) -> str:
+        parameters = {
+            "keyword": name,
+            "max": 1
+        }
+        header = {
+            "Authorization": f"Bearer {self.token}"
+        }
+        response = requests.get(url=CITY_SEARCH, params=parameters, headers=header)
+        response.raise_for_status()
+        return response.json()["data"][0]["iataCode"]
 
