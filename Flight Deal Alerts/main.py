@@ -5,7 +5,7 @@ from data_manager import DataManager
 from flight_data import FlightData
 from twilio.rest import Client
 
-ORIGIN_CITY_CODE = "VTZ"
+ORIGIN_CITY_CODE = "DEL"
 
 flight_search = FlightSearch()
 data_manager = DataManager()
@@ -26,7 +26,8 @@ for destination in sheet_data:
         origin_city=ORIGIN_CITY_CODE,
         destination=destination
     )
-    if flight_info.price is not None and float(flight_info.price) <= destination["lowestPrice"]:
+    if flight_info.price is not None and float(flight_info.price) <= float(destination["lowestPrice"]):
+        print(f"Price to {flight_info.destination_airport} is {flight_info.price}")
         # Send Message Through Twilio
         account_sid = os.getenv("TWILIO_SID")
         auth_token = os.getenv("TWILIO_TOKEN")
@@ -37,6 +38,8 @@ for destination in sheet_data:
                          f"until {flight_info.return_date}",
                     from_=os.getenv("TWILIO_PHONE_NUMBER"),
                     to=os.getenv("MY_PHONE_NUMBER"))
+        print(message.status)
+        print(message.sid)
     else:
         print(f"No flights available to {destination["city"]}")
         continue
