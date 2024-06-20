@@ -1,10 +1,12 @@
 import requests
 import os
 from dotenv import load_dotenv
+
 load_dotenv()
 
 TOKEN_ENDPOINT = "https://test.api.amadeus.com/v1/security/oauth2/token"
 CITY_SEARCH = "https://test.api.amadeus.com/v1/reference-data/locations/cities"
+FLIGHT_SEARCH = "https://test.api.amadeus.com/v2/shopping/flight-offers"
 
 
 class FlightSearch:
@@ -41,3 +43,19 @@ class FlightSearch:
         response.raise_for_status()
         return response.json()["data"][0]["iataCode"]
 
+    def check_flights(self, origin_city_code, destination_city_code, from_time, to_time):
+        header = {
+            "Authorization": f"Bearer {self.token}",
+        }
+        parameters = {
+            "originLocationCode": origin_city_code,
+            "destinationLocationCode": destination_city_code,
+            "departureDate": from_time,
+            "returnDate": to_time,
+            "adults": 1,
+            "currencyCode": "INR",
+            "max": 10,
+        }
+        response = requests.get(url=FLIGHT_SEARCH, params=parameters, headers=header)
+        response.raise_for_status()
+        return response.json()
