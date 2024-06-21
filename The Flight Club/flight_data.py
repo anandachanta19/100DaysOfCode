@@ -12,6 +12,7 @@ class FlightData:
         self.origin_airport = None
         self.destination_airport = None
         self.out_date = None
+        self.stops = None
         self.return_date = None
 
     def get_data(self, flight_details: flight_search, origin_city, destination):
@@ -32,3 +33,4 @@ class FlightData:
             self.return_date = \
                 flight["itineraries"][0]["segments"][len(flight["itineraries"][0]["segments"]) - 1]["arrival"][
                     "at"].split("T")[0]
+            self.stops = len(flight["itineraries"][0]["segments"])
