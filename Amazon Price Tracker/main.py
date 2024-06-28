@@ -10,7 +10,7 @@ load_dotenv()
 FROM = os.getenv("MY_EMAIL")
 PASSWORD = os.getenv("MY_APP_PASSWORD")
 TO = os.getenv("TO_EMAIL")
-AMAZON_PRODUCT_URL = ("https://www.amazon.com/dp/B075CYMYK6?psc=1&ref_=cm_sw_r_cp_ud_ct_FM9M699VKHTT47YD50Q6")
+AMAZON_PRODUCT_URL = "https://www.amazon.com/dp/B075CYMYK6?psc=1&ref_=cm_sw_r_cp_ud_ct_FM9M699VKHTT47YD50Q6"
 TARGET_PRICE = 100
 
 HEADERS = {
