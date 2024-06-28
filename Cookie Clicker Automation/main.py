@@ -10,16 +10,38 @@ driver = webdriver.Chrome(options=chrome_options)
 driver.get(url="http://orteil.dashnet.org/experiments/cookie/")
 
 cookie = driver.find_element(By.XPATH, value='//*[@id="cookie"]')
-assets = []
-buys = driver.find_elements(By.CSS_SELECTOR, value="#store b")
 
-# Slicing the Extra Div
-buys = buys[:len(buys)-1]
+timeout = time.time() + 5
+five_min = time.time() + 300
 
-# Getting Prices
-for buy in buys:
-    cost = buy.text.split(" - ")[1]
-    if "," in cost:
-        cost = "".join(cost.split(","))
-    assets.append(int(cost))
+while True:
+    cookie.click()
+    # Every 5 seconds check for assets
+    if time.time() > timeout:
+
+        # Calculating Prices
+        options = driver.find_elements(By.CSS_SELECTOR, value="#store b")
+        prices = []
+
+        for opt in options:
+            if opt.text != "":
+                prices.append(float(opt.text.split(" - ")[1].replace(",", "")))
+
+        # Calculating the current money
+        money = float(driver.find_element(By.CSS_SELECTOR, value="#money").text.replace(",", ""))
+
+        # Finding the most expensive one which can be affordable can be Affordable!
+        for i in range(len(prices)):
+            if prices[i] < money:
+                continue
+            else:
+                options[i - 1].click()
+                break
+
+        timeout = time.time() + 5
+
+    if time.time() > five_min:
+        cookie_rate = driver.find_element(By.XPATH, value='//*[@id="cps"]').text
+        print(cookie_rate)
+        break
 
