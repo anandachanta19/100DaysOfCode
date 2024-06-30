@@ -2,6 +2,8 @@ import os
 from dotenv import load_dotenv
 from selenium import webdriver
 from time import sleep
+
+from selenium.common import ElementClickInterceptedException
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 
@@ -52,16 +54,42 @@ class InstaFollower:
         )
         sleep(1)
         not_now.click()
-        sleep(3)
+        sleep(10)
 
         # Closing Notifications Popup
         notifications = self.driver.find_element(
             By.XPATH,
-            value='/html/body/div[3]/div[1]/div/div[2]/div/div/div/div/div[2]/div/div/div[3]/button[2]'
+            value='/html/body/div[4]/div[1]/div/div[2]/div/div/div/div/div[2]/div/div/div[3]/button[2]'
         )
         sleep(1)
         notifications.click()
 
+    def find_followers(self):
+        sleep(3)
+        self.driver.get(url=f"https://www.instagram.com/{SIMILAR_ACCOUNT}/followers")
+        sleep(5.2)
+        # The xpath of the modal that shows the followers will change over time. Update yours accordingly.
+        modal_xpath = "/html/body/div[6]/div[1]/div/div[2]/div/div/div/div/div[2]/div/div/div[2]"
+        modal = self.driver.find_element(by=By.XPATH, value=modal_xpath)
+        for i in range(10):
+            self.driver.execute_script("arguments[0].scrollTop = arguments[0].scrollHeight", modal)
+            sleep(2)
+
+    def follow(self):
+        sleep(5)
+        all_buttons = self.driver.find_elements(By.CSS_SELECTOR, value='._aano button')
+
+        for button in all_buttons:
+            try:
+                button.click()
+                sleep(1.1)
+            # Clicking button for someone who is already being followed will trigger dialog to Unfollow/Cancel
+            except ElementClickInterceptedException:
+                cancel_button = self.driver.find_element(by=By.XPATH, value="//button[contains(text(), 'Cancel')]")
+                cancel_button.click()
+
 
 bot = InstaFollower()
 bot.login()
+bot.find_followers()
+bot.follow()
