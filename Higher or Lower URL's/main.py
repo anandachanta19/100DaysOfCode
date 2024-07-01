@@ -12,14 +12,12 @@ def make_bold(function):
 def make_emphasis(function):
     def wrapper():
         return f"<em>{function()}</em>"
-
     return wrapper
 
 
 def make_underlined(function):
     def wrapper():
         return f"<u>{function()}</u>"
-
     return wrapper
 
 
@@ -29,6 +27,7 @@ def make_underlined(function):
 @make_underlined
 def bye():
     return "Bye!"
+
 
 @app.route("/")
 def hello():
