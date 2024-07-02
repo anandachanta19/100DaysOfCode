@@ -3,8 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <title>Contact Form</title>
+    <link rel="stylesheet" href="/static/style.css">
 </head>
 <body>
-
+    <div class="container">
+        <div class="form">
+            <div class="title">
+                CONTACT FORM
+            </div>
+            <form class="inputs" action="{{ url_for('login') }}" method="post">
+                <input class="opt" type="text" name="name" placeholder="Name">
+                <input class="opt" type="password" name="password" placeholder="Password">
+                <button type="submit">Submit</button>
+            </form>
+        </div>
+    </div>
 </body>
 </html>
