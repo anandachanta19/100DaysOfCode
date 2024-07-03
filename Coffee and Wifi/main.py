@@ -31,42 +31,38 @@ class CafeForm(FlaskForm):
     coffee = SelectField(
         label='Coffee Rating',
         choices=[
-            ('value1', '☕️☕️☕️☕️☕️'),
-            ('value2', '☕️☕️☕️☕️'),
-            ('value3', '☕️☕️☕️'),
-            ('value4', '☕️☕️'),
-            ('value5', '☕️')
+            ('☕️☕️☕️☕️☕️', '☕️☕️☕️☕️☕️'),
+            ('☕️☕️☕️☕️', '☕️☕️☕️☕️'),
+            ('☕️☕️☕️', '☕️☕️☕️'),
+            ('☕️☕️', '☕️☕️'),
+            ('☕️', '☕️')
         ]
     )
     wifi = SelectField(
         label='Wifi Rating',
         choices=[
-            ('value1', '💪💪💪💪💪'),
-            ('value2', '💪💪💪💪'),
-            ('value3', '💪💪💪'),
-            ('value4', '💪💪'),
-            ('value5', '💪')
+            ('💪💪💪💪💪', '💪💪💪💪💪'),
+            ('💪💪💪💪', '💪💪💪💪'),
+            ('💪💪💪', '💪💪💪'),
+            ('💪💪', '💪💪'),
+            ('💪', '💪'),
+            ('❌', '❌')
         ]
     )
     power = SelectField(
         label='Power Rating',
         choices=[
-            ('value1', '🔌🔌🔌🔌🔌'),
-            ('value2', '🔌🔌🔌🔌'),
-            ('value3', '🔌🔌🔌'),
-            ('value4', '🔌🔌'),
-            ('value5', '🔌')
+            ('🔌🔌🔌🔌🔌', '🔌🔌🔌🔌🔌'),
+            ('🔌🔌🔌🔌', '🔌🔌🔌🔌'),
+            ('🔌🔌🔌', '🔌🔌🔌'),
+            ('🔌🔌', '🔌🔌'),
+            ('🔌', '🔌'),
+            ('❌', '❌')
         ]
     )
     submit = SubmitField('Submit')
 
-# Exercise:
-# add: Location URL, open time, closing time, coffee rating, wifi rating, power outlet rating fields
-# make coffee/wifi/power a select element with choice of 0 to 5.
-# e.g. You could use emojis ☕️/💪/✘/🔌
-# make all fields required except submit
-# use a validator to check that the URL field has a URL entered.
-# ---------------------------------------------------------------------------
+# Exercise Done
 
 
 # all Flask routes below
@@ -79,10 +75,19 @@ def home():
 def add_cafe():
     form = CafeForm()
     if form.validate_on_submit():
-        return "Success!"
+        with open('cafe-data.csv', mode='a', newline='', encoding="utf-8") as file:
+            writer = csv.writer(file)
+            writer.writerow(
+                [f"{form.cafe.data}",
+                 f"{form.map.data}",
+                 f"{form.open.data}",
+                 f"{form.close.data}",
+                 f"{form.coffee.data}",
+                 f"{form.wifi.data}",
+                 f"{form.power.data}"]
+            )
     # Exercise:
-    # Make the form write a new row into cafe-data.csv
-    # with   if form.validate_on_submit()
+    # Done
     return render_template('add.html', form=form)
 
 
