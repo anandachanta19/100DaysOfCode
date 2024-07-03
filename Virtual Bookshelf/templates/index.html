@@ -6,9 +6,19 @@
   </head>
   <body>
     <h1>My Library</h1>
-    <ul>
-      <li></li>
-    </ul>
+    {% if not books %}
+      <p>Library is empty!</p>
+      {% else %}
+      <ul>
+        {% for book in books %}
+        <li>
+          <a href="{{ url_for('delete', book_id=book.id) }}">Delete</a>
+          {{book.title}} - {{book.author}} - {{book.rating}}/10
+          <a href="{{ url_for('edit', book_id=book.id) }}">Edit Rating</a>
+        </li>
+        {% endfor %}
+      </ul>
+    {% endif %}
 
     <a href="{{ url_for('add') }}">Add New Book</a>
   </body>
