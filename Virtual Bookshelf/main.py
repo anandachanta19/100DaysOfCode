@@ -23,9 +23,9 @@ def home():
     return render_template('index.html')
 
 
-@app.route("/add")
+@app.route("/add", methods=['GET', 'POST'])
 def add():
-    return render_template('index.html')
+    return render_template('add.html')
 
 
 if __name__ == "__main__":
