@@ -3,6 +3,7 @@ from dotenv import load_dotenv
 from flask import Flask, render_template
 from flask_wtf import FlaskForm
 from wtforms import EmailField, PasswordField
+from wtforms.fields.simple import SubmitField
 from wtforms.validators import DataRequired, Email
 from flask_bootstrap import Bootstrap5
 
@@ -15,6 +16,7 @@ bootstrap = Bootstrap5(app)
 class LoginForm(FlaskForm):
     email = EmailField(label='Email', validators=[DataRequired(), Email()])
     password = PasswordField(label='Password', validators=[DataRequired()])
+    submit = SubmitField(label='Login')
 
 
 @app.route("/")
