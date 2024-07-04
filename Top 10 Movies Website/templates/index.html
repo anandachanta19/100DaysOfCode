@@ -15,7 +15,7 @@
           <div>
         <div class="title">{{ movie.title }}<span class="release_date">({{ movie.year }})</span></div>
             <div class="rating">
-                <label>{{ movie.year }}</label>
+                <label>{{ movie.rating }}</label>
               <i class="fas fa-star star"></i>
             </div>
               <p class="review">"{{ movie.review }}"</p>
@@ -23,8 +23,8 @@
                 {{ movie.description }}
             </p>
 
-            <a href="#" class="button">Update</a>
-            <a href="#" class="button delete-button">Delete</a>
+            <a href="{{ url_for('edit', movie_id=movie.id) }}" class="button">Update</a>
+            <a href="{{ url_for('delete', movie_id=movie.id) }}" class="button delete-button">Delete</a>
 
           </div>
         </div>
