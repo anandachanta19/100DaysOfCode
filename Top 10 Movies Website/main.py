@@ -46,6 +46,10 @@ class EditForm(FlaskForm):
     submit = SubmitField(label="Submit")
 
 
+class AddForm(FlaskForm):
+    movie = StringField(label="Movie Title", validators=[DataRequired()])
+    submit = SubmitField(label="Submit")
+
 @app.route("/")
 def home():
     movies = db.session.execute(db.select(Movie)).scalars()
@@ -62,6 +66,23 @@ def edit(movie_id):
         db.session.commit()
         return redirect(url_for("home"))
     return render_template("edit.html", movie=movie_to_be_update, form=form)
+
+
+@app.route("/delete/<movie_id>")
+def delete(movie_id):
+    movie_to_be_delete = db.get_or_404(Movie, movie_id)
+    db.session.delete(movie_to_be_delete)
+    db.session.commit()
+    return redirect(url_for("home"))
+
+
+@app.route("/add", methods=["GET", "POST"])
+def add():
+    form = AddForm()
+    if form.validate_on_submit():
+        response = requests.get(url=)
+        return redirect(url_for("home"))
+    return render_template("add.html", form=form)
 
 
 if __name__ == '__main__':
