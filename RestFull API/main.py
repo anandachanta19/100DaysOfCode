@@ -88,6 +88,11 @@ def search_cafe_based_on_location():
 # HTTP POST - Create Record
 @app.route("/add", methods=["POST"])
 def post_new_cafe():
+    api_key = request.args.get("api-key")
+    if api_key != "TopSecretAPIKey":
+        return (jsonify(
+            error={"Not Authorized": "Sorry! That's not allowed. Make sure you have correct api key."}), 403
+        )
     new_cafe = Cafe(
         name=request.form.get("name"),
         map_url=request.form.get("map_url"),
@@ -121,6 +126,20 @@ def update_coffe_price(cafe_id):
 
 
 # HTTP DELETE - Delete Record
+@app.route("/report-closed/<cafe_id>", methods=["DELETE"])
+def report_closed(cafe_id):
+    cafe_to_be_deleted = db.session.get(Cafe, cafe_id)
+    if cafe_to_be_deleted:
+        api_key = request.args.get("api-key")
+        if api_key != "TopSecretAPIKey":
+            return (jsonify(
+                error={"Not Authorized": "Sorry! That's not allowed. Make sure you have correct api key."}), 403
+            )
+        db.session.delete(cafe_to_be_deleted)
+        db.session.commit()
+        return jsonify(response={"success": "Successfully deleted the cafe."})
+    else:
+        return jsonify(error={"Not Found": "Sorry! There is no cafe found with that id."}), 404
 
 
 if __name__ == '__main__':
