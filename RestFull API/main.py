@@ -82,7 +82,7 @@ def search_cafe_based_on_location():
     if len(cafes) > 0:
         response = [cafe.to_dict() for cafe in cafes]
         return jsonify(cafes=response)
-    return jsonify(error={"Not Found": "Sorry we don't cafe at that location"}), 404
+    return jsonify(error={"Not Found": "Sorry we don't have a cafe at that location"}), 404
 
 
 # HTTP POST - Create Record
@@ -104,7 +104,19 @@ def post_new_cafe():
     db.session.commit()
     return jsonify(response={"success": "Successfully added the new cafe."})
 
+
 # HTTP PUT/PATCH - Update Record
+@app.route("/update-price/<cafe_id>", methods=["PATCH"])
+def update_coffe_price(cafe_id):
+    cafe = db.session.get(Cafe, cafe_id)
+    if cafe:
+        new_price = request.args.get("new_price")
+        cafe.coffee_price = new_price
+        db.session.commit()
+        return jsonify(response={"success": "Successfully updated the coffee price."})
+    else:
+        return jsonify(error={"Not Found": "Sorry! There is no cafe found with that id."}), 404
+
 
 # HTTP DELETE - Delete Record
 
