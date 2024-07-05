@@ -111,6 +111,8 @@ def update_coffe_price(cafe_id):
     cafe = db.session.get(Cafe, cafe_id)
     if cafe:
         new_price = request.args.get("new_price")
+        if new_price is None:
+            return jsonify(error={"Bad Request": "Sorry! May be you have not provided the new price"}), 400
         cafe.coffee_price = new_price
         db.session.commit()
         return jsonify(response={"success": "Successfully updated the coffee price."})
