@@ -10,8 +10,13 @@
       <div class="col-md-10 col-lg-8 col-xl-7">
         <div class="page-heading">
           <!-- TODO: Show a different h1 if editing existing post -->
-          <h1>New Post</h1>
-          <span class="subheading">You're going to make a great blog post!</span>
+          {% if is_editing %}
+            <h1>Edit Post</h1>
+            <span class="subheading">You're going to edit a blog post!</span>
+          {% else %}
+            <h1>New Post</h1>
+            <span class="subheading">You're going to make a great blog post!</span>
+          {% endif %}
         </div>
       </div>
     </div>
@@ -22,8 +27,9 @@
   <div class="container">
     <div class="row">
       <div class="col-lg-8 col-md-10 mx-auto">
-        <!-- TODO:-Add CKEditor and render the form here -->
-        {{ render_form(form, novalidate=True) }}
+        {{ ckeditor.load() }}
+        {{ ckeditor.config(name='body') }}
+        {{ render_form(form, novalidate=True, button_map={"submit": "primary"}) }}
       </div>
     </div>
   </div>

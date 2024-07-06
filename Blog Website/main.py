@@ -11,6 +11,7 @@ from datetime import datetime as dt
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = '8BYkEfBA6O6donzWlSihBXox7C0sKR6b'
+ckeditor = CKEditor(app)
 Bootstrap5(app)
 
 
@@ -40,8 +41,8 @@ class AddForm(FlaskForm):
     subtitle = StringField(label='Subtitle', validators=[DataRequired()])
     author = StringField(label='Author', validators=[DataRequired()])
     img_url = StringField(label='Image URL', validators=[DataRequired(), URL()])
-    body = StringField(label='Main Content', validators=[DataRequired()])
-    submit = SubmitField(label='Create')
+    body = CKEditorField(label='Main Content', validators=[DataRequired()])
+    submit = SubmitField(label='Submit')
 
 
 with app.app_context():
@@ -60,7 +61,6 @@ def show_post(post_id):
     return render_template("post.html", post=requested_post)
 
 
-# TODO: add_new_post() to create a new blog post
 @app.route("/new-post", methods=["GET", "POST"])
 def add_post():
     form = AddForm()
@@ -76,12 +76,37 @@ def add_post():
         db.session.add(new_post)
         db.session.commit()
         return redirect(url_for("get_all_posts"))
-    return render_template("make-post.html", form=form)
+    return render_template("make-post.html", form=form, is_editing=False)
 
 
-# TODO: edit_post() to change an existing blog post
+@app.route('/edit-post/<post_id>', methods=["GET", "POST"])
+def edit(post_id):
+    post = db.get_or_404(BlogPost, post_id)
+    edit_form = AddForm(
+        title=post.title,
+        subtitle=post.subtitle,
+        author=post.author,
+        img_url=post.img_url,
+        body=post.body
+    )
+    if edit_form.validate_on_submit():
+        post.title = edit_form.title.data
+        post.subtitle = edit_form.subtitle.data
+        post.img_url = edit_form.img_url.data
+        post.author = edit_form.author.data
+        post.body = edit_form.body.data
+        db.session.commit()
+        return redirect(url_for('show_post', post_id=post.id))
+    return render_template("make-post.html", form=edit_form, is_editing=True)
 
-# TODO: delete_post() to remove a blog post from the database
+
+@app.route('/delete/<post_id>')
+def delete_post(post_id):
+    post_to_be_delete = db.get_or_404(BlogPost, post_id)
+    db.session.delete(post_to_be_delete)
+    db.session.commit()
+    return redirect(url_for('get_all_posts'))
+
 
 # Below is the code from previous lessons. No changes needed.
 @app.route("/about")
