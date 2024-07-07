@@ -1,3 +1,4 @@
+{% from "bootstrap5/form.html" import render_form %}
 {% include "header.html" %}
 
 <!-- Page Header-->
@@ -10,7 +11,7 @@
           <h2 class="subheading">{{ post.subtitle }}</h2>
           <span class="meta"
             >Posted by
-            <a href="#">{{ post.author }}</a>
+            <a href="#">{{ post.author.name }}</a>
             on {{ post.date }}
           </span>
         </div>
@@ -27,28 +28,38 @@
         {{ post.body|safe }}
         <!--TODO: Only show Edit Post button if user id is 1 (admin user) -->
         <div class="d-flex justify-content-end mb-4">
+          {% if current_user.id == 1 %}
           <a
             class="btn btn-primary float-right"
             href="{{url_for('edit_post', post_id=post.id)}}"
             >Edit Post</a
           >
+          {% endif %}
         </div>
 
         <!-- Comments Area -->
         <!-- TODO: Add a CKEditor for commenting below -->
+          {{ ckeditor.load() }}
+          {{ ckeditor.config(name='comment') }}
+          {{ render_form(form, novalidate=True, button_map={"submit": "primary"}) }}
         <div class="comment">
-          <!-- TODO: Show all the comments on a post -->
           <ul class="commentList">
+            <!-- Show all comments -->
+            {% for comment in post.comments: %}
             <li>
-              <div class="commenterImage">
-                <img src="../static/assets/img/default-profile.jpg" />
+               <div class="commenterImage">
+                <img
+                  src="{{ comment.cmt_author.email | gravatar }}"
+                />
               </div>
               <div class="commentText">
-                <p>Some comment</p>
-                <span class="date sub-text">comment author name</span>
+                {{comment.text|safe}}
+                <span class="sub-text">{{comment.cmt_author.name}}</span>
               </div>
             </li>
+            {% endfor %}
           </ul>
+
         </div>
       </div>
     </div>

@@ -21,9 +21,19 @@ include "header.html" %}
 <main class="mb-4">
   <div class="container">
     <div class="row">
-      <!-- TODO: add a flash message here for users registering twice -->
       <div class="col-lg-8 col-md-10 mx-auto">
         <!--TODO: render login form here-->
+        <!-- TODO: add a flash message here for users registering twice -->
+        {% if is_already_exist %}
+        <p style="color:red">The email already exists.Please Login.</p>
+        {% endif %}
+        {% if registered_now %}
+        <p style="color:green">You have registered successfully. Please Login</p>
+        {% endif %}
+        {% if password_incorrect %}
+        <p style="color:red">Password entered is incorrect. Please try again.</p>
+        {% endif %}
+        {{ render_form(form, novalidate=True) }}
       </div>
     </div>
   </div>

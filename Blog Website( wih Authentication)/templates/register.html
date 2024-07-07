@@ -22,7 +22,13 @@ include "header.html" %}
   <div class="container">
     <div class="row">
       <div class="col-lg-8 col-md-10 mx-auto">
-        <!--TODO: render your registration form here-->
+        {% if is_no_match %}
+        <p style="color: red">"Passwords entered are not matching"</p>
+        {% endif %}
+        {% if has_to_register %}
+        <p style="color: red">"Email has to be registered before login."</p>
+        {% endif %}
+        {{ render_form(form, novalidate=True) }}
       </div>
     </div>
   </div>
