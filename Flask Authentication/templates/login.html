@@ -2,6 +2,12 @@
 
 <div class="box">
   <h1>Login</h1>
+  {% if is_email_exist %}
+    <p style="color:red">Email already exists! Please log in.</p>
+  {% endif %}
+  {% if is_not_password %}
+    <p style="color:red">Password incorrect. Please try again.</p>
+  {% endif %}
   <!-- TODO: Use Message Flashing to display feedback to the user with a <p> -->
   <form action="{{ url_for('login') }}" method="post">
     <input type="text" name="email" placeholder="Email" required="required" />
