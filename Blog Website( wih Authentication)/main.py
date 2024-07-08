@@ -1,16 +1,25 @@
+import os
+import smtplib
 from datetime import date
+from functools import wraps
+
+from dotenv import load_dotenv
 from flask import Flask, abort, render_template, redirect, url_for, flash, request
 from flask_bootstrap import Bootstrap5
 from flask_ckeditor import CKEditor
 from flask_gravatar import Gravatar
 from flask_login import UserMixin, login_user, LoginManager, current_user, logout_user, login_required
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import Integer, String, Text
 from sqlalchemy.orm import relationship, DeclarativeBase, Mapped, mapped_column
-from sqlalchemy import Integer, String, Text, ForeignKey
-from functools import wraps
 from werkzeug.security import generate_password_hash, check_password_hash
 
 from forms import CreatePostForm, RegisterForm, LoginForm, CommentForm
+
+load_dotenv()
+FROM = os.getenv("MY_EMAIL")
+PASSWORD = os.getenv("MY_APP_PASSWORD")
+TO = os.getenv("TO_EMAIL")
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = '8BYkEfBA6O6donzWlSihBXox7C0sKR6b'
@@ -56,7 +65,6 @@ def admin_only(function):
 
 
 # CONFIGURE TABLES
-# TODO: Create a User table for all your registered users.
 
 class User(UserMixin, db.Model):
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
@@ -214,7 +222,6 @@ def add_new_post():
     return render_template("make-post.html", form=form, curremt_user=current_user)
 
 
-
 @app.route("/edit-post/<int:post_id>", methods=["GET", "POST"])
 @admin_only
 def edit_post(post_id):
@@ -251,9 +258,25 @@ def about():
     return render_template("about.html")
 
 
-@app.route("/contact")
+@app.route("/contact", methods=["GET", "POST"])
 def contact():
-    return render_template("contact.html")
+    if request.method == "POST":
+        data = request.form
+        message = (f"Name: {data['name']}\n"
+                   f"Email: {data['email']}\n"
+                   f"Phone Number: {data['phone']}\n"
+                   f"Message: {data['message']}")
+        print(message)
+        with smtplib.SMTP("smtp.gmail.com", port=587) as connection:
+            connection.starttls()
+            connection.login(user=FROM, password=PASSWORD)
+            connection.sendmail(from_addr=FROM,
+                                to_addrs=TO,
+                                msg=f"Subject:New Visitor to Blogs\n\n"
+                                    f"{message}")
+        return render_template("contact.html", msg_sent=True)
+    else:
+        return render_template("contact.html", msg_sent=False)
 
 
 if __name__ == "__main__":
