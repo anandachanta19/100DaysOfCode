@@ -103,4 +103,4 @@ This repository is licensed under the MIT License. See the [LICENSE](LICENSE) fi
 Feel free to reach out for any questions, suggestions, or collaborations:
 
 - **GitHub**: [anandachanta19](https://github.com/anandachanta19)
-- **Email**: [anandachanata19@gmail.com]
+- **Email**: [anandachanta19@gmail.com]
